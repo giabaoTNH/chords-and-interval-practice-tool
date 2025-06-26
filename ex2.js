@@ -138,8 +138,8 @@ questionBank = [
     {q:'A-C#', typeOfInterval:'Major third', semitones:'4'},
     {q:'A-Db', typeOfInterval:'Diminished forth', semitones:'4'},
     {q:'A-D', typeOfInterval:'Perfect forth', semitones:'5'},
-    {q:'A-D#', typeOfInterval:'Augmented forth (There\'s no way you like this shit, this is absolute EVIL!!!! >:3)', semitones:'6'},
-    {q:'A-Eb', typeOfInterval:'Diminished fifth (There\'s no way you like this shit, this is absolute EVIL!!!! >:3)', semitones:'6'},
+    {q:'A-D#', typeOfInterval:'Augmented forth (There\\\'s no way you like this shit, this is absolute EVIL!!!! >:3)', semitones:'6'},
+    {q:'A-Eb', typeOfInterval:'Diminished fifth (There\\\'s no way you like this shit, this is absolute EVIL!!!! >:3)', semitones:'6'},
     {q:'A-E', typeOfInterval:'Perfect fifth', semitones:'7'},
     {q:'A-Fb', typeOfInterval:'Diminished sixth', semitones:'7'},
     {q:'A-F', typeOfInterval:'Minor sixth', semitones:'8'},
@@ -170,7 +170,10 @@ questionBank = [
 
 ];
 // Shuffle the question bank
-questionBank.sort(() => Math.random() - 0.5);
+
+
+const evilImage = 'assets/evil_image.jpg';
+const evilImageCredit = 'Wolfrox on Devian'
 
 var score = 0;
 var ques_id = 0;
@@ -184,10 +187,22 @@ var Score = document.getElementById('Score');
 var Congrats = document.getElementById('Congrats');
 
 // HELPER FUNCTIONS //
-function RevealAnswer(answer) {
-    Reveal.innerHTML = '<p style="margin:2px">The answer is '+answer+'</p>'
-    + '<button onclick="score+=1;StartTest()" style="margin:10px">I got it RIGHT!!!</button>'
-    + '<button onclick="StartTest()">Ohno I got it WRONG...</button>';
+function RevealAnswer(answer, semitones) {
+    if (semitones === '6') {
+        Reveal.innerHTML = '<p style="margin:2px">Answer: <p style="font-size:48px; margin:2px">'+answer+'</p></p>'
+        + '<img src="' + evilImage + '" alt="Evil Furry Femboy by '+evilImageCredit+'" style="width:200px">'
+        + '<p>Art by '+evilImageCredit+'</p>'
+        + '<button onclick="score+=1;StartTest()" style="margin:10px">I got it RIGHT!!!</button>'
+        + '<button onclick="StartTest()">Ohno I got it WRONG...</button>';
+    }
+    else {
+        Reveal.innerHTML = '<p style="margin:2px">Answer: <p style="font-size:48px; margin:2px">'+answer+'</p></p>'
+        // + '<img scr="' + evilImage + '" alt="Evil Furry Femboy by '+evilImageCredit+'">'
+        // + '<p>Art by '+evilImageCredit+'</p>'
+        + '<button onclick="score+=1;StartTest()" style="margin:10px">I got it RIGHT!!!</button>'
+        + '<button onclick="StartTest()">Ohno I got it WRONG...</button>';
+    
+    }
 }
 function StopTest() {
     Congrats.innerHTML = '<p style="font-size:40px;margin:2px">Congratulation! '+score+'/'+NUMBER_OF_TEST+'</p>';
@@ -203,6 +218,7 @@ function QuesGen() {
 }
 
 function TestInit() {
+    questionBank.sort(() => Math.random() - 0.5);
     StartButton.innerHTML = "";
     Congrats.innerHTML = '';
     score = 0;
@@ -218,7 +234,7 @@ function StartTest() {
     var question = QuesGen();
     TestTile.innerHTML = '<h1>Question Number ' + ques_id +'</h1>';
     TestQues.innerHTML = '<p style="font-size:40px;margin:2px">' + question.q + '</p>';
-    Reveal.innerHTML = '<button onclick="RevealAnswer(\'' + question.semitones + '\')">Reveal Answer</button>';
+    Reveal.innerHTML = '<button onclick="RevealAnswer(\'' + question.typeOfInterval + '\',\'' +question.semitones +'\')">Reveal Answer</button>';
     Score.innerHTML = '<li>Score: ' + score + '</li><li>Question: ' + ques_id + '/' + NUMBER_OF_TEST +'</li>';
     ques_id += 1;
 }
